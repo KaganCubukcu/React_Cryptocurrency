@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
+  Avatar,
   Container,
   LinearProgress,
   Paper,
@@ -14,9 +15,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import axios from "axios";
 import { CoinList } from "../config/api";
+import { numberWithComas } from "../config/Requests";
 
 const Markets = () => {
   const [coins, setCoins] = useState([]);
@@ -35,6 +38,7 @@ const Markets = () => {
   useEffect(() => {
     fetchCoins();
   }, [currency]);
+
   const handleSearch = () => {
     return coins.filter(
       (coin) =>
@@ -92,31 +96,81 @@ const Markets = () => {
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody>
-              {handleSearch().map((row) => {
-                const profit = row.price_change_percentage_24h > 0;
-                console.log(row);
+            <TableBody
+              sx={{
+                backgroundColor: "#131722",
+              }}
+            >
+              {coins.map((coin) => {
+                handleSearch();
+                const profit = coin.price_change_percentage_24h > 0;
+
                 return (
                   <TableRow
-                    onClick={() => navigate.push(`/coins/${row.id}`)}
-                    key={row.name}
+                    onClick={() => navigate.push(`/coins/${coin.id}`)}
+                    key={coin.name}
                   >
                     <TableCell
                       component="th"
                       scope="row"
                       sx={{
                         display: "flex",
-                        gap: "15",
+                        alignItems: " center",
+                        color: "white",
                       }}
                     >
-                      <img
-                        src={row?.image}
-                        alt={row.name}
-                        height="50"
+                      <Avatar src={coin?.image} alt={coin.name} />
+                      <Container
                         sx={{
-                          marginBottom: 10,
+                          display: "flex",
+                          fontSize: 22,
                         }}
-                      />
+                      >
+                        <Typography
+                          sx={{
+                            textTransform: "uppercase",
+                            marginRight: 2,
+                          }}
+                        >
+                          {coin.symbol}
+                        </Typography>
+                        <Typography>{coin.name}</Typography>
+                      </Container>
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        color: "white",
+                      }}
+                    >
+                      ₺{numberWithComas(coin.current_price.toFixed(2))}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        color: "white",
+                      }}
+                    >
+                      {profit > 0 ? (
+                        <ArrowDropUpIcon
+                          sx={{
+                            color: "green",
+                          }}
+                        />
+                      ) : (
+                        <ArrowDropDownIcon sx={{ color: "red" }} />
+                      )}
+                      {coin.price_change_percentage_24h.toFixed(2)}%
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        color: "white",
+                      }}
+                    >
+                      ₺
+                      {numberWithComas(coin.market_cap.toString().slice(0, -6))}
+                      M
                     </TableCell>
                   </TableRow>
                 );
