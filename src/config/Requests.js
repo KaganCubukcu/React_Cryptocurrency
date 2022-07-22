@@ -12,16 +12,15 @@ export function numberWithComas(x) {
 const symbol = "₺";
 const Requests = () => {
   const [trending, setTrending] = useState([]);
-  const currency = "TRY";
-  const fetchCrypto = async () => {
-    const { data } = await axios.get(TrendingCoins(currency));
-
-    setTrending(data);
-  };
 
   useEffect(() => {
-    fetchCrypto();
-  }, [currency]);
+    axios
+      .get(TrendingCoins())
+      .then((res) => {
+        setTrending(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const items = trending.map((coin) => {
     let profit = coin.price_change_percentage_24h >= 0;
