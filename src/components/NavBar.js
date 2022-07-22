@@ -31,7 +31,7 @@ const NavBar = () => {
         backgroundColor: "#131722",
       }}
     >
-      <Container maxWidth="xxl">
+      <Container maxWidth="xl">
         <Toolbar
           disableGutters={false}
           sx={{
@@ -48,7 +48,15 @@ const NavBar = () => {
               fontFamily: "Arial",
             }}
           >
-            <Link to="/"> Kagan's Crypto </Link>
+            <Link
+              to="/"
+              style={{
+                color: "white",
+                textDecoration: "none",
+              }}
+            >
+              Kagan's Crypto
+            </Link>
           </Typography>
           <Box
             sx={{
