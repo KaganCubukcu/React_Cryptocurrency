@@ -4,10 +4,11 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import axios from "axios";
 import { CoinList } from "../config/api";
 import { numberWithComas } from "../config/Requests";
-
+import { Link } from "react-router-dom";
 import {
   Avatar,
   Container,
+  Pagination,
   Paper,
   Table,
   TableBody,
@@ -22,7 +23,7 @@ import {
 const Markets = () => {
   const [coins, setCoins] = useState([]);
   const [search, setSearch] = useState("");
-
+  const [page, setPage] = useState(1);
   useEffect(() => {
     axios
       .get(CoinList())
@@ -47,6 +48,7 @@ const Markets = () => {
       <Typography
         variant="h4"
         sx={{
+          marginTop: 3,
           margin: "18",
           fontFamily: "Arial",
         }}
@@ -66,7 +68,12 @@ const Markets = () => {
         }}
         onChange={handleChange}
       />
-      <TableContainer component={Paper}>
+      <TableContainer
+        component={Paper}
+        sx={{
+          backgroundColor: "#131722",
+        }}
+      >
         <Table>
           <TableHead sx={{ backgroundColor: "#131722" }}>
             <TableRow>
@@ -89,75 +96,109 @@ const Markets = () => {
               backgroundColor: "#131722",
             }}
           >
-            {filteredCoins.map((coin) => {
-              return (
-                <TableRow key={coin.name}>
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    sx={{
-                      display: "flex",
-                      alignItems: " center",
-                      color: "white",
-                    }}
-                  >
-                    <Avatar src={coin?.image} alt={coin.name} />
-                    <Container
+            {filteredCoins
+              .slice((page - 1) * 10, (page - 1) * 10 + 10)
+              .map((coin) => {
+                return (
+                  <TableRow key={coin.name}>
+                    <TableCell
+                      component="th"
+                      scope="row"
                       sx={{
                         display: "flex",
-                        fontSize: 22,
+                        alignItems: " center",
+                        color: "white",
+                        border: "none",
                       }}
                     >
-                      <Typography
+                      <Avatar src={coin?.image} alt={coin.name} />
+                      <Container
                         sx={{
-                          textTransform: "uppercase",
-                          marginRight: 2,
+                          display: "flex",
+                          fontSize: 22,
                         }}
                       >
-                        {coin.symbol}
-                      </Typography>
-                      <Typography>{coin.name}</Typography>
-                    </Container>
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      color: "white",
-                    }}
-                  >
-                    ₺{numberWithComas(coin.current_price.toFixed(2))}
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      color: "white",
-                    }}
-                  >
-                    {coin.price_change_percentage_24h > 0 ? (
-                      <ArrowDropUpIcon
-                        sx={{
-                          color: "green",
-                        }}
-                      />
-                    ) : (
-                      <ArrowDropDownIcon sx={{ color: "red" }} />
-                    )}
-                    {coin.price_change_percentage_24h.toFixed(2)}%
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      color: "white",
-                    }}
-                  >
-                    ₺{numberWithComas(coin.market_cap.toString().slice(0, -6))}M
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                        <Typography
+                          sx={{
+                            textTransform: "uppercase",
+                            marginRight: 2,
+                          }}
+                        >
+                          {coin.symbol}
+                        </Typography>
+                        <Typography>
+                          <Link
+                            to={coin.name.toLowerCase()}
+                            style={{
+                              color: "white",
+                            }}
+                          >
+                            {coin.name}
+                          </Link>
+                        </Typography>
+                      </Container>
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        color: "white",
+                        border: "none",
+                      }}
+                    >
+                      ₺{numberWithComas(coin.current_price.toFixed(2))}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        color: "white",
+                        border: "none",
+                        paddingTop: 1,
+                      }}
+                    >
+                      {coin.price_change_percentage_24h > 0 ? (
+                        <ArrowDropUpIcon
+                          sx={{
+                            color: "green",
+                            paddingRight: 2,
+                          }}
+                        />
+                      ) : (
+                        <ArrowDropDownIcon
+                          sx={{ color: "red", paddingRight: 1.5 }}
+                        />
+                      )}
+                      {coin.price_change_percentage_24h.toFixed(2)}%
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        color: "white",
+                        border: "none",
+                      }}
+                    >
+                      ₺
+                      {numberWithComas(coin.market_cap.toString().slice(0, -6))}
+                      M
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Pagination
+        count={10}
+        style={{
+          padding: 20,
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+        onChange={(_, value) => {
+          setPage(value);
+        }}
+      />
     </Container>
   );
 };

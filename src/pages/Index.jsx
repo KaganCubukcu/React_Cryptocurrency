@@ -46,7 +46,14 @@ const Index = () => {
                 },
               }}
             >
-              <Link to="/SignUp">Get Started</Link>
+              <Link
+                to="/SignUp"
+                style={{
+                  color: "white",
+                }}
+              >
+                Get Started
+              </Link>
             </Button>
           </Typography>
         </Box>

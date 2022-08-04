@@ -29,6 +29,7 @@ const NavBar = () => {
       position="static"
       sx={{
         backgroundColor: "#131722",
+        boxShadow: "0 0 .3rem #fff",
       }}
     >
       <Container maxWidth="xl">
@@ -117,7 +118,9 @@ const NavBar = () => {
               flexGrow: 1,
             }}
           >
-            <Link to="/"> Kagan's Crypto </Link>
+            <Link to="/" style={{ color: "white" }}>
+              Kagan's Crypto
+            </Link>
           </Typography>
 
           {/* Nav menu items xl */}
@@ -138,7 +141,14 @@ const NavBar = () => {
                   textTransform: "none",
                 }}
               >
-                <Link to={page}>{page}</Link>
+                <Link
+                  to={page}
+                  style={{
+                    color: "white",
+                  }}
+                >
+                  {page}
+                </Link>
               </Button>
             ))}
           </Box>
@@ -156,7 +166,14 @@ const NavBar = () => {
                 },
               }}
             >
-              <Link to="/Login">Log in</Link>
+              <Link
+                to="/Login"
+                style={{
+                  color: "white",
+                }}
+              >
+                Log in
+              </Link>
             </Button>
 
             <Button
