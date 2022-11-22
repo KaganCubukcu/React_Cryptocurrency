@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import { Link } from "react-router-dom";
-const pages = ["Exchange", "Markets", "Dashboard", "Headmap"];
+const pages = ["Markets", "Dashboard", "Headmap"];
 
 const NavBar = () => {
   //Ham Menu Open/Close
@@ -188,6 +188,7 @@ const NavBar = () => {
                 paddingX: "20px",
                 paddingY: "10px",
                 "&:hover": {
+                  backgroundColor: "white",
                   color: "#FAE069",
                 },
               }}
